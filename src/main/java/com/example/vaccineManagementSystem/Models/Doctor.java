@@ -1,10 +1,14 @@
 package com.example.vaccineManagementSystem.Models;
 
-import Enums.Gender;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-
+import lombok.Data;
+import java.util.ArrayList;
+import java.util.List;
+import Enums.Gender;
 @Table(name = "doctors")
 @Entity
+@Data
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,56 +19,17 @@ public class Doctor {
     private int age;
 
     @Enumerated(value = EnumType.STRING)
-    private Enums.Gender gender;
+    private Gender gender;
 
-    public Doctor(Integer docId, String name, int age, Gender gender, String emailId) {
-        this.docId = docId;
-        this.name = name;
-        this.age = age;
-        this.gender = gender;
-        this.emailId = emailId;
-    }
 
     @Column(unique = true)
     private String emailId;
 
-    public Integer getDocId() {
-        return docId;
-    }
+    @ManyToOne
+    @JoinColumn
+    private VaccinationCenter vaccinationCenter;
 
-    public void setDocId(Integer docId) {
-        this.docId = docId;
-    }
+    @OneToMany(mappedBy = "doctor",cascade = CascadeType.ALL)
+    private List<Appointment> appointmentList=new ArrayList<>();
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public String getEmailId() {
-        return emailId;
-    }
-
-    public void setEmailId(String emailId) {
-        this.emailId = emailId;
-    }
 }

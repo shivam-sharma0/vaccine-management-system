@@ -3,33 +3,30 @@ package com.example.vaccineManagementSystem.Models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Date;
 
-
-@Table(name = "dose")
+@Table(name = "appointments")
 @Entity
 @Data
-public class Dose {
+
+public class Appointment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
 
-    @Column(unique = true)
-    private String doseId;
+    private Date appointmentDate;
 
-    @CreationTimestamp
-    private Date creationDate;
-    @CreationTimestamp
-    private Date vaccinationDate;
+    private String appointmentTime;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn
+    private Doctor doctor;
+
+    @ManyToOne
     @JoinColumn
     @JsonIgnore
     private User user;
-
-
 
 }
